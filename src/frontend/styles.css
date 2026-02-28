@@ -1,0 +1,173 @@
+.login-container {
+  max-width: 350px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 2rem;
+}
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2d3a4b;
+}
+.form-group {
+  margin-bottom: 1.2rem;
+}
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #2d3a4b;
+}
+input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #cfd8dc;
+  border-radius: 5px;
+}
+button {
+  width: 100%;
+  padding: 0.8rem;
+  background: #4f8cff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+button:hover {
+  background: #3466c2;
+}
+.error {
+  color: #d32f2f;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+body {
+  background: #f4f6fb;
+  font-family: Arial, sans-serif;
+}
+.forgot-container {
+  max-width: 350px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 2rem;
+}
+.forgot-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2d3a4b;
+}
+.form-group {
+  margin-bottom: 1.2rem;
+}
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #2d3a4b;
+}
+input[type="email"] {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #cfd8dc;
+  border-radius: 5px;
+}
+button {
+  width: 100%;
+  padding: 0.8rem;
+  background: #4f8cff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+button:hover {
+  background: #3466c2;
+}
+.info, .error {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.info {
+  color: #388e3c;
+}
+.error {
+  color: #d32f2f;
+}
+body {
+  background: #f8fafc;
+}
+
+.container {
+  max-width: 400px;
+}
+
+h1 {
+  color: #2c3e50;
+}
+
+#auth-container .card {
+  margin-bottom: 1.5rem;
+}
+
+#message {
+  min-height: 2rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+#profile-form .form-label {
+  font-weight: 500;
+}
+
+#profile-message {
+  min-height: 2rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .login-container,
+  .forgot-container,
+  .register-container,
+  .container {
+    max-width: 98vw;
+    margin: 20px auto;
+    padding: 1rem;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  h1, h2 {
+    font-size: 1.3rem;
+  }
+  button {
+    font-size: 0.95rem;
+    padding: 0.7rem;
+  }
+  .form-group input {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .login-container,
+  .forgot-container,
+  .register-container,
+  .container {
+    padding: 0.5rem;
+  }
+  h1, h2 {
+    font-size: 1rem;
+  }
+}
+
+/* Mejor compatibilidad con navegadores */
+input, button {
+  box-sizing: border-box;
+  outline: none;
+}

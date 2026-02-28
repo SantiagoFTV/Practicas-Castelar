@@ -1,0 +1,3 @@
+// Aquí irá la lógica de frontend para registro e inicio de sesión
+
+// ...copia el contenido original de main.js aquí si lo necesitas...
