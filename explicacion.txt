@@ -1,0 +1,488 @@
+================================================================================
+EXPLICACIÓN DE ARCHIVOS - BACKEND Y FRONTEND
+================================================================================
+
+BACKEND (src/backend/)
+================================================================================
+
+1. index.js
+   - Archivo principal del servidor Express
+   - Configura el servidor backend en el puerto 3000
+   - Importa y usa las rutas de autenticación
+   - Sirve archivos estáticos del frontend
+   - Redirige la ruta raíz (/) a login.html
+   - Utiliza CORS para permitir solicitudes del frontend
+
+2. package.json
+   - Archivo de configuración de dependencias del proyecto
+   - Define los paquetes necesarios (express, cors, bcryptjs, mysql2, dotenv, etc.)
+   - Especifica los scripts para ejecutar el proyecto
+   - Gestiona versiones de las dependencias
+
+3. config/db.js
+   - Configuración de conexión a la base de datos MySQL
+   - Crea un pool de conexiones usando mysql2/promise
+   - Lee variables de entorno (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
+   - Exporta el pool para que otros archivos puedan usarlo
+
+4. models/tempUsers.js
+   - Base de datos temporal en memoria (no persistente)
+   - Contiene un array con usuarios de prueba
+   - Almacena datos de ejemplo con credenciales hash (bcrypt)
+   - Se utiliza para simular la base de datos sin conexión a MySQL
+
+5. models/users.sql
+   - Script SQL que define la estructura de la tabla de usuarios
+   - Crea la tabla 'users' con campos: id, username, email, password, created_at
+   - Define username y email como UNIQUE para evitar duplicados
+   - Se ejecuta cuando se configura la base de datos MySQL real
+
+6. routes/auth.js
+   - Define todas las rutas de autenticación de la aplicación
+   - POST /api/auth/register: Permite registrar nuevos usuarios
+   - POST /api/auth/login: Maneja el inicio de sesión validando credenciales
+   - POST /api/auth/forgot: Inicia el proceso de recuperación de contraseña
+   - Utiliza bcryptjs para encriptar y validar contraseñas
+   - Gestiona tokens de recuperación temporales
+   - Valida que los datos requeridos estén presentes
+   - Convierte contraseñas a hash antes de guardarlas
+
+7. scripts/
+   - Carpeta para almacenar scripts útiles del backend
+   - Podría contener scripts de migración de base de datos
+   - Scripts de seeders para datos iniciales
+   - Herramientas de utilidad para el backend
+
+================================================================================
+
+FRONTEND (src/frontend/)
+================================================================================
+
+1. html/login.html
+   - Página de inicio de sesión
+   - Contiene un formulario con campos para email y contraseña
+   - Vinculado con login.js para las validaciones
+   - Proporciona acceso a la opción "Olvidé mi contraseña"
+   - Enlace para ir a la página de registro
+
+2. html/register.html
+   - Página de registro de nuevos usuarios
+   - Formulario con campos: username, email, password
+   - Vinculado con register.js para procesar el registro
+   - Enlace de retorno a la página de login
+
+3. html/index.html
+   - Página principal de la aplicación (después de login)
+   - Página de bienvenida del usuario autenticado
+   - Punto de entrada tras iniciar sesión exitosamente
+   - Posiblemente contiene links a otras páginas
+
+4. html/forgot.html
+   - Página para recuperación de contraseña
+   - Formulario que solicita el email del usuario
+   - Vinculado con forgot.js para procesar la solicitud
+   - Muestra mensaje informativo después de enviar la solicitud
+
+5. html/puente.html
+   - Página de transición o puente
+   - Podría usarse como página intermedia entre login y index
+   - O como página de verificación antes de acceder
+
+6. css/styles.css
+   - Archivo con todos los estilos CSS de la aplicación
+   - Define diseño, colores, tipografía
+   - Estilos responsivos para diferentes dispositivos
+   - Estilos para formularios, botones, mensajes de error
+
+7. js/login.js
+   - Script para el funcionamiento del formulario de login
+   - Captura el evento de envío del formulario
+   - Valida que los campos no estén vacíos
+   - Envía datos al backend (/api/auth/login)
+   - Guarda el token en localStorage tras login exitoso
+   - Redirige a index.html si el login es correcto
+   - Muestra mensajes de error si hay problemas
+
+8. js/register.js
+   - Script para el funcionamiento del formulario de registro
+   - Captura datos del formulario de registro
+   - Valida que todos los campos estén llenos
+   - Envía datos al backend (/api/auth/register)
+   - Redirige a login.html tras registro exitoso
+   - Muestra mensajes de error si el email ya existe
+
+9. js/forgot.js
+   - Script para la recuperación de contraseña
+   - Captura el email del usuario
+   - Envía solicitud al backend (/api/auth/forgot)
+   - Muestra mensaje informativo al usuario
+   - Simula el envío de enlace de recuperación
+
+10. js/main.js
+    - Script principal / archivo base de lógica del frontend
+    - Podría contener lógica compartida entre páginas
+    - Según comentario: "Aquí irá la lógica de frontend para registro e inicio de sesión"
+    - Actualmente placeholders/comentarios
+
+11. js/profile.js
+    - Script para la gestión del perfil del usuario
+    - Maneja el formulario de carga de imagen de perfil
+    - Guarda comentarios positivos del usuario (3 campos)
+    - Envía imagen y comentarios al backend (/api/profile)
+    - Valida que la imagen se haya seleccionado
+    - Muestra mensajes de éxito o error
+
+12. js/index-scripts.js
+    - Script específico para la página index.html
+    - Lógica para la página principal después del login
+    - Podría inicializar componentes de la página
+
+13. js/puente-scripts.js
+    - Script específico para la página puente (puente.html)
+    - Lógica de transición e inicialización
+    - Podría manejar redirecciones automáticas
+
+14. README.md
+    - Documentación del frontend
+    - Instrucciones de instalación
+    - Guía de uso del frontend
+    - Información sobre estructura y dependencias
+
+================================================================================
+
+FLUJO DE LA APLICACIÓN
+================================================================================
+
+1. Usuario accede a http://localhost:3000/
+2. Se redirige a login.html (login)
+3. Si no tiene cuenta, va a register.html y se registra
+4. Backend valida y guarda el usuario (con password encriptado)
+5. Usuario regresa a login.html
+6. Usuario ingresa credenciales en login.html
+7. login.js envía datos a /api/auth/login
+8. Backend valida con bcrypt comparando contraseñas
+9. Si es correcto, se retorna token y se redirige a index.html
+10. Usuario puede acceder a su perfil (profile.html) para cargar foto y comentarios
+11. Usuario puede solicitar recuperación de contraseña desde forgot.html
+
+================================================================================
+
+EXPLICACIÓN LÍNEA POR LÍNEA DEL CÓDIGO BACKEND
+================================================================================
+
+====== FILE: index.js (Servidor Principal) ======
+
+// Backend principal para Sprint 1
+import express from 'express';
+  → Importa Express (framework para crear servidores web con Node.js)
+
+import cors from 'cors';
+  → Importa CORS (Cross-Origin Resource Sharing): permite que el frontend 
+    acceda al backend desde diferente origen
+
+import dotenv from 'dotenv';
+  → Importa dotenv: librería para leer variables de entorno desde archivo .env
+
+dotenv.config();
+  → Carga y procesa el archivo .env para acceder a variables como 
+    DB_HOST, DB_PASSWORD, etc.
+
+import path from 'path';
+  → Importa módulo path: herramienta para manejar rutas de archivos de forma 
+    segura en cualquier sistema operativo
+
+import { fileURLToPath } from 'url';
+  → Importa función para convertir URL a ruta de archivo 
+    (necesario en módulos ES6)
+
+const __filename = fileURLToPath(import.meta.url);
+  → Obtiene la ruta completa del archivo actual (index.js)
+
+const __dirname = path.dirname(__filename);
+  → Obtiene el directorio del archivo actual (carpeta donde está index.js)
+
+const app = express();
+  → Crea una aplicación Express, que es el servidor web
+
+app.use(cors());
+  → Activa CORS globalmente en toda la aplicación
+  → Ahora el frontend puede hacer solicitudes al backend
+
+app.use(express.json());
+  → Configura Express para entender datos JSON en las solicitudes
+  → Convierte automáticamente JSON a objetos JavaScript
+
+app.use(express.static(path.join(__dirname, '../frontend')));
+  → Sirve archivos estáticos (HTML, CSS, JS, imágenes) desde la carpeta frontend
+  → Cuando solicitas /css/styles.css, busca en ../frontend/css/styles.css
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/html/login.html'));
+});
+  → Define una ruta GET para la raíz del servidor (/)
+  → Cuando alguien entra a http://localhost:3000/
+  → Se envía automáticamente el archivo login.html
+
+import authRoutes from './routes/auth.js';
+  → Importa las rutas de autenticación del archivo auth.js
+
+app.use('/api/auth', authRoutes);
+  → Registra las rutas de autenticación bajo la ruta /api/auth
+  → Ejemplo: POST /api/auth/login, POST /api/auth/register, etc.
+
+const PORT = process.env.PORT || 3000;
+  → Define el puerto: lee del .env o usa 3000 por defecto
+  → Permite cambiar el puerto sin editar el código
+
+app.listen(PORT, () => {
+  console.log(`Servidor backend escuchando en puerto ${PORT}`);
+  console.log(`Accede a: http://localhost:${PORT}/html/login.html`);
+});
+  → Inicia el servidor en el puerto especificado
+  → Imprime mensajes en consola para confirmar que está escuchando
+
+================================================================================
+
+====== FILE: config/db.js (Conexión a Base de Datos) ======
+
+// Configuración de conexión a MySQL
+import mysql from 'mysql2/promise';
+  → Importa la librería mysql2/promise
+  → mysql2: driver para conectar con MySQL desde Node.js
+  → /promise: versión que soporta async/await en lugar de callbacks
+
+import dotenv from 'dotenv';
+  → Importa dotenv para leer variables de entorno
+
+dotenv.config();
+  → Carga las variables del archivo .env
+  → Necesario para obtener credenciales de la BD sin guardarlas en el código
+
+const pool = mysql.createPool({
+  → Crea un "pool" (grupo/agrupación) de conexiones a MySQL
+  → Un pool mantiene varias conexiones abiertas para eficiencia
+  → Reutiliza conexiones en lugar de crear nuevas cada vez
+
+  host: process.env.DB_HOST,
+    → Dirección del servidor MySQL (ej: localhost, 192.168.1.100)
+    → Se lee del archivo .env
+
+  port: process.env.DB_PORT,
+    → Puerto del servidor MySQL (generalmente 3306)
+    → Se lee del archivo .env
+
+  user: process.env.DB_USER,
+    → Usuario para conectarse a MySQL (ej: root, admin)
+    → Se lee del archivo .env
+
+  password: process.env.DB_PASSWORD,
+    → Contraseña del usuario de MySQL
+    → Se lee del archivo .env (nunca hardcodear contraseñas)
+
+  database: process.env.DB_NAME,
+    → Nombre de la base de datos a usar (ej: usuarios_db)
+    → Se lee del archivo .env
+});
+
+export default pool;
+  → Exporta el pool para usarlo en otros archivos
+  → Otros archivos hacen: import pool from './config/db.js'
+
+================================================================================
+
+====== FILE: routes/auth.js (Rutas de Autenticación) ======
+
+import express from 'express';
+  → Importa Express para crear el router
+
+import bcrypt from 'bcryptjs';
+  → Importa bcryptjs: librería para encriptar contraseñas
+  → Hace que las contraseñas en la BD sean ilegibles incluso si se hackea
+
+import pool from '../config/db.js';
+  → Importa la conexión al pool de MySQL para hacer queries
+
+import tempUsers from '../models/tempUsers.js';
+  → Importa la BD temporal en memoria (array de usuarios)
+  → Se usa cuando MySQL no está disponible o para testing
+
+const router = express.Router();
+  → Crea un router (contenedor de rutas) para este archivo
+
+const resetTokens = new Map();
+  → Crea un Map (diccionario) para guardar tokens de recuperación
+  → Almacena: token → email
+  → Se usa para validar que el usuario está autorizado a cambiar contraseña
+
+========== MÉTODO: POST /api/auth/register ==========
+
+router.post('/register', async (req, res) => {
+  → Define una ruta POST en /api/auth/register
+
+  const { username, email, password } = req.body;
+    → Extrae username, email y password del cuerpo de la solicitud
+    → req.body contiene los datos enviados por el frontend en JSON
+
+  if (!username || !email || !password) 
+    return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+    → Valida que los 3 campos estén presentes
+    → Si falta alguno, retorna error 400 (Bad Request)
+
+  if (tempUsers.find(u => u.email === email)) 
+    return res.status(400).json({ message: 'El correo ya está registrado' });
+    → Busca si el email ya existe en tempUsers
+    → Si existe, retorna error (no permite duplicados)
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+    → Encripta la contraseña con bcrypt
+    → El número 10 es el "salt round" (nivel de seguridad)
+    → Ejemplo: "hola123" → "$2b$10$asdK3kD9sdK3kD9sdK3kD..."
+    → await: espera a que termine la encriptación
+
+  tempUsers.push({
+    id: tempUsers.length + 1,
+      → Genera un ID único (siguiente número)
+    username,
+      → Guarda el nombre de usuario
+    email,
+      → Guarda el email
+    password: hashedPassword,
+      → Guarda la contraseña ENCRIPTADA (nunca la contraseña plana)
+    created_at: new Date()
+      → Marca la fecha/hora de creación
+  });
+
+  res.json({ message: 'Registro exitoso' });
+    → Responde al cliente con mensaje de éxito
+
+========== MÉTODO: POST /api/auth/login ==========
+
+router.post('/login', async (req, res) => {
+  → Define ruta POST para iniciar sesión
+
+  const { email, password } = req.body;
+    → Extrae email y password del cuerpo de la solicitud
+
+  console.log('Login recibido:', { email, password });
+    → Imprime en la consola del servidor para debugging
+
+  const user = tempUsers.find(u => u.email === email);
+    → Busca el usuario por email en tempUsers
+    → Retorna el objeto usuario o undefined si no existe
+
+  if (!user) {
+    console.log('Usuario no encontrado:', email);
+    return res.status(400).json({ message: 'Usuario no encontrado' });
+  }
+    → Si no existe el usuario, retorna error
+
+  const valid = await bcrypt.compare(password, user.password);
+    → Compara la contraseña ingresada con la encriptada guardada
+    → Retorna true/false sin revelar la contraseña
+    → await: espera a que termine la comparación
+
+  if (!valid) {
+    console.log('Contraseña incorrecta para:', email);
+    return res.status(400).json({ message: 'Contraseña incorrecta' });
+  }
+    → Si las contraseñas no coinciden, retorna error
+
+  console.log('Login exitoso para:', email);
+  res.json({ message: 'Login exitoso', token: 'demo-token' });
+    → Si todo es correcto:
+    → Imprime mensaje en consola
+    → Retorna token al cliente (frontend lo guarda en localStorage)
+
+========== MÉTODO: POST /api/auth/forgot ==========
+
+router.post('/forgot', async (req, res) => {
+  → Define ruta POST para solicitar recuperación de contraseña
+
+  const { email } = req.body;
+    → Extrae el email del cuerpo de la solicitud
+
+  if (!email) 
+    return res.status(400).json({ message: 'El correo es obligatorio' });
+    → Valida que el email esté presente
+
+  const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
+    → Hace query a la BD: busca el usuario por email
+    → [rows]: desestructura el resultado (primer elemento es el array de filas)
+    → [email]: parámetro seguro contra SQL injection
+
+  if (!rows[0]) 
+    return res.json({ message: 'Si el correo está registrado, recibirás un enlace.' });
+    → Si no encuentra usuario:
+    → Retorna mensaje genérico por privacidad (no revela si existe el email)
+
+  const token = Math.random().toString(36).slice(2);
+    → Genera un token aleatorio único
+    → Ejemplo: "3j8d9s8d9s8d9s"
+    → Este token se envía por email para verificar identidad
+
+  resetTokens.set(token, email);
+    → Guarda el token en el Map: token → email
+    → Se usa después para validar que el usuario no es un impostor
+
+  res.json({ message: 'Enlace enviado', resetLink: `/api/auth/reset/${token}` });
+    → Retorna al cliente el enlace de recuperación con el token
+
+========== MÉTODO: GET /api/auth/reset/:token ==========
+
+router.get('/reset/:token', (req, res) => {
+  → Define ruta GET para validar el token
+  → :token es un parámetro dinámico (ej: /api/auth/reset/abc123)
+
+  const { token } = req.params;
+    → Extrae el token de la URL
+
+  const email = resetTokens.get(token);
+    → Busca el email asociado a ese token en el Map
+    → Retorna el email si existe, undefined si no
+
+  if (!email) 
+    return res.status(400).json({ message: 'Token inválido' });
+    → Si el token no existe o expiró, retorna error
+
+  res.json({ email });
+    → Retorna el email (frontend lo usa para confirmar identidad)
+
+========== MÉTODO: POST /api/auth/reset/:token ==========
+
+router.post('/reset/:token', async (req, res) => {
+  → Define ruta POST para cambiar la contraseña con token
+
+  const { token } = req.params;
+    → Extrae el token de la URL
+
+  const { password } = req.body;
+    → Extrae la nueva contraseña del cuerpo
+
+  const email = resetTokens.get(token);
+    → Busca el email asociado al token
+
+  if (!email) 
+    return res.status(400).json({ message: 'Token inválido' });
+    → Si no existe token, retorna error
+
+  if (!password) 
+    return res.status(400).json({ message: 'La nueva contraseña es obligatoria' });
+    → Valida que envíe la nueva contraseña
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+    → Encripta la nueva contraseña
+
+  await pool.execute('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, email]);
+    → UpdateA la BD: cambia la contraseña del usuario
+    → [hashedPassword, email]: valores seguros sin SQL injection
+
+  resetTokens.delete(token);
+    → Elimina el token (ya fue usado, no se puede volver a usar)
+
+  res.json({ message: 'Contraseña actualizada' });
+    → Retorna mensaje de éxito
+
+export default router;
+  → Exporta todas las rutas para que index.js las use
+
+================================================================================

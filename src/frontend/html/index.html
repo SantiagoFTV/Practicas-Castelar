@@ -1,27 +1,268 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menú Principal</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal - El Puente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .header-section {
+            color: white;
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+        }
+
+        .logout-btn .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .section-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .section-card:active {
+            transform: translateY(-5px);
+        }
+
+        .section-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            z-index: -1;
+        }
+
+        .puente-section .section-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .apartado1-section .section-image {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .apartado2-section .section-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .apartado3-section .section-image {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .section-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            font-size: 0.95rem;
+            color: #718096;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .section-footer {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .section-footer i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover .section-footer i {
+            transform: translateX(4px);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .sections-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .logout-btn {
+                position: static;
+                margin-bottom: 1rem;
+                text-align: right;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light">
-  <div class="container py-3">
-    <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-danger btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
+<body>
+    <div class="logout-btn">
+        <button class="btn" onclick="cerrarSesion()">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </button>
     </div>
-    <h1 class="mb-4 text-center">Menú Principal</h1>
-    <div class="d-grid gap-3 col-6 mx-auto">
-      <button class="btn btn-primary" onclick="location.href='puente.html'">Ir a Puente</button>
-      <button class="btn btn-secondary" onclick="location.href='apartado1.html'">Apartado 1</button>
-      <button class="btn btn-secondary" onclick="location.href='apartado2.html'">Apartado 2</button>
-      <button class="btn btn-secondary" onclick="location.href='apartado3.html'">Apartado 3</button>
-      <!-- Agrega más botones para futuros apartados aquí -->
+
+    <div class="container">
+        <div class="header-section">
+            <h1>🧠 Proyecto Bridge Builder</h1>
+            <p>Plataforma de gestión colaborativa</p>
+        </div>
+
+        <div class="sections-grid">
+            <!-- Puente Section -->
+            <a href="puente.html" class="section-card puente-section">
+                <div class="section-image">
+                    👥
+                </div>
+                <div class="section-content">
+                    <h3 class="section-title">Perfiles en Conflicto</h3>
+                    <p class="section-description">Crea y gestiona tus perfiles con imágenes personalizadas. Aplica efectos pixelados y añade comentarios detallados.</p>
+                    <div class="section-footer">
+                        Ir al módulo <i class="bi bi-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Apartado 1 Section -->
+            <a href="apartado1.html" class="section-card apartado1-section">
+                <div class="section-image">
+                    �‍💼
+                </div>
+                <div class="section-content">
+                    <h3 class="section-title">Apartado 1</h3>
+                    <p class="section-description">Explora análisis y reportes detallados sobre tus datos. Visualiza tendencias y métricas clave en tiempo real.</p>
+                    <div class="section-footer">
+                        Ir al módulo <i class="bi bi-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Apartado 2 Section -->
+            <a href="apartado2.html" class="section-card apartado2-section">
+                <div class="section-image">
+                    �‍💻
+                </div>
+                <div class="section-content">
+                    <h3 class="section-title">Apartado 2</h3>
+                    <p class="section-description">Descubre nuevas ideas y mejora continua. Accede a recursos, guías y mejores prácticas de la plataforma.</p>
+                    <div class="section-footer">
+                        Ir al módulo <i class="bi bi-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Apartado 3 Section -->
+            <a href="apartado3.html" class="section-card apartado3-section">
+                <div class="section-image">
+                    👤
+                </div>
+                <div class="section-content">
+                    <h3 class="section-title">Apartado 3</h3>
+                    <p class="section-description">Configura y personaliza tu experiencia. Ajusta preferencias, privacidad y opciones avanzadas según tus necesidades.</p>
+                    <div class="section-footer">
+                        Ir al módulo <i class="bi bi-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/index-scripts.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/index-scripts.js"></script>
 </body>
 </html>

@@ -16,11 +16,19 @@
 		</div>
 		<div class="card mb-4">
 			<div class="card-body">
-				<h2 class="card-title text-center mb-3">Subir Imagen y Comentarios Positivos</h2>
+				<h2 class="card-title text-center mb-3">Perfil de Persona en Conflicto</h2>
 				<form id="profile-form" enctype="multipart/form-data">
 					<div class="mb-3">
-						<label for="profile-image" class="form-label">Imagen</label>
+						<label for="profile-image" class="form-label">Imagen de la persona en conflicto</label>
 						<input type="file" class="form-control" id="profile-image" accept="image/*" required>
+					</div>				<div id="preview-container" class="mb-3" style="display: none;">
+					<div class="text-center p-3 bg-white rounded" style="border: 2px solid #e0e0e0;">
+						<p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Previsualización de la imagen:</p>
+						<canvas id="preview-canvas" style="max-width: 100%; height: auto; border-radius: 8px; display: block; margin: 0 auto; max-height: 300px;"></canvas>
+					</div>
+				</div>					<div class="form-check mb-3">
+						<input class="form-check-input" type="checkbox" id="pixelate-image">
+						<label class="form-check-label" for="pixelate-image">Pixelar imagen al visualizar</label>
 					</div>
 					<div class="mb-3">
 						<label for="comment1" class="form-label">Comentario Positivo 1</label>
@@ -40,6 +48,9 @@
 					</div>
 				</form>
 				<div id="profile-message" class="mt-3"></div>
+				<hr class="my-4">
+				<h3 class="h5 mb-3">Perfiles guardados</h3>
+				<div id="profiles-list" class="row g-3"></div>
 			</div>
 		</div>
 		<div style="text-align:center;margin-top:2rem;">

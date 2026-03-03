@@ -26,7 +26,9 @@ app.get('/', (req, res) => {
 
 // Rutas
 import authRoutes from './routes/auth.js';
+import profileRoutes from './routes/profile.js';
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

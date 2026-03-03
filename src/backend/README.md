@@ -1,21 +1,21 @@
 # Proyecto El Puente - Backend
 
 ## Descripción
-Backend para la aplicación El Puente. Permite registro, login y gestión de usuarios. Funciona con usuarios en memoria para pruebas rápidas, y puede conectarse a MySQL si se desea usar base de datos real.
+Backend para la aplicación El Puente. Permite registro/login persistente en MySQL y gestión de perfiles de persona en conflicto con imagen y opción de pixelado.
 
 ## Tecnologías
 - Node.js + Express
-- MySQL (opcional)
-- Autenticación JWT (simulada)
+- MySQL
+- Multer (subida de archivos)
 - Variables de entorno en `.env`
 
 ## Instalación
 1. Ve a la carpeta `src/backend`.
 2. Instala dependencias:
    ```bash
-   npm install express cors dotenv mysql2 bcryptjs jsonwebtoken
+  npm install
    ```
-3. (Opcional) Configura el archivo `.env` si quieres usar MySQL.
+3. Configura el archivo `.env` con conexión a MySQL.
 4. Inicia el servidor:
    ```bash
    npm start
@@ -29,13 +29,13 @@ Backend para la aplicación El Puente. Permite registro, login y gestión de usu
 ## Endpoints principales
 - `POST /api/auth/register` — Registro de usuario
 - `POST /api/auth/login` — Login de usuario (devuelve token)
+- `POST /api/profile` — Crea perfil en conflicto con imagen
+- `GET /api/profile/mine` — Lista perfiles del usuario autenticado
+- `GET /api/profile/image/:filename` — Sirve imagen subida
 
-## Usuarios de prueba
-Puedes iniciar sesión con:
-- **Correo:** demo@demo.com  
-  **Contraseña:** demo123
-- **Correo:** prueba@correo.com  
-  **Contraseña:** prueba123
+## Autenticación
+- El token devuelto en login se envía como `Authorization: Bearer <token>`.
+- Registro y login consultan tabla `users` en MySQL.
 
 ## Scripts
 - `npm install` — Instala dependencias
@@ -49,7 +49,9 @@ Coloca aquí utilidades para:
 - Pruebas automáticas
 
 ## Base de datos
-Para pruebas rápidas, no necesitas MySQL. Si quieres usar la base de datos real, activa MySQL y configura el backend.
+El backend usa MySQL como fuente principal de datos:
+- `users` para autenticación
+- `conflict_profiles` para perfiles en conflicto
 
 ---
 ¿Dudas o problemas? Consulta instalacion.md o pide ayuda.

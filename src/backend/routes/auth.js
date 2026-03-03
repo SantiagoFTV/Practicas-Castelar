@@ -1,45 +1,64 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import pool from '../config/db.js';
-import tempUsers from '../models/tempUsers.js';
 
 const router = express.Router();
 
 // Simulación de almacenamiento de tokens de recuperación
 const resetTokens = new Map();
 
-// Registro temporal
+// Registro de usuario en MySQL
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
-  if (!username || !email || !password) return res.status(400).json({ message: 'Todos los campos son obligatorios' });
-  if (tempUsers.find(u => u.email === email)) return res.status(400).json({ message: 'El correo ya está registrado' });
-  const hashedPassword = await bcrypt.hash(password, 10);
-  tempUsers.push({
-    id: tempUsers.length + 1,
-    username,
-    email,
-    password: hashedPassword,
-    created_at: new Date()
-  });
-  res.json({ message: 'Registro exitoso' });
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+  }
+
+  try {
+    const [existingUsers] = await pool.execute('SELECT id FROM users WHERE email = ? OR username = ?', [email, username]);
+
+    if (existingUsers.length > 0) {
+      return res.status(400).json({ message: 'El correo o usuario ya está registrado' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await pool.execute(
+      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+      [username, email, hashedPassword]
+    );
+
+    return res.json({ message: 'Registro exitoso' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error en el registro' });
+  }
 });
 
-// Login temporal
+// Inicio de sesión contra MySQL
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log('Login recibido:', { email, password });
-  const user = tempUsers.find(u => u.email === email);
-  if (!user) {
-    console.log('Usuario no encontrado:', email);
-    return res.status(400).json({ message: 'Usuario no encontrado' });
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Correo y contraseña son obligatorios' });
   }
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) {
-    console.log('Contraseña incorrecta para:', email);
-    return res.status(400).json({ message: 'Contraseña incorrecta' });
+
+  try {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
+    const user = rows[0];
+
+    if (!user) {
+      return res.status(400).json({ message: 'Usuario no encontrado' });
+    }
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      return res.status(400).json({ message: 'Contraseña incorrecta' });
+    }
+
+    const token = `demo-token-${Buffer.from(email).toString('base64')}`;
+    return res.json({ message: 'Login exitoso', token });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error en el inicio de sesión' });
   }
-  console.log('Login exitoso para:', email);
-  res.json({ message: 'Login exitoso', token: 'demo-token' });
 });
 
 // Solicitar enlace de recuperación

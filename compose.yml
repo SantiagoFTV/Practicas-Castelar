@@ -1,0 +1,65 @@
+services:
+  # Servicio de MySQL
+  db:
+    image: mysql:8.0
+    container_name: el-puente-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: el_puente
+      MYSQL_USER: puente_user
+      MYSQL_PASSWORD: puente_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/backend/models/users.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - el-puente-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Servicio del Backend
+  backend:
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+    container_name: el-puente-backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: puente_user
+      DB_PASSWORD: puente_password
+      DB_NAME: el_puente
+      PORT: 3000
+    ports:
+      - "3001:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - el-puente-network
+    volumes:
+      - ./src/backend:/app
+      - /app/node_modules
+
+  # Servicio del Frontend
+  frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    container_name: el-puente-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - el-puente-network
+
+volumes:
+  mysql_data:
+
+networks:
+  el-puente-network:
+    driver: bridge
