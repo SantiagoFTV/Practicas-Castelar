@@ -99,61 +99,117 @@ Es un programa para escribir código. Es como Microsoft Word, pero diseñado esp
 
 ---
 
-## 3. Familiarización con la Terminal
+## 3. Aprender a usar PowerShell (La Terminal)
 
-### PowerShell (Windows)
-La terminal principal que usaremos en Windows.
+### ¿Qué es PowerShell?
+Es una **ventana donde escribes comandos** en lugar de hacer clic. Al principio puede parecer raro, pero es muy poderoso.
 
-### Comandos básicos a practicar:
+**No tengas miedo**: Si escribes algo mal, no se romperá nada. Solo aparecerá un mensaje de error y puedes intentar de nuevo.
+
+### Abrir PowerShell
+1. Menú Inicio → Escribe "PowerShell"
+2. Haz clic en "Windows PowerShell"
+3. Verás una ventana azul
+
+### Comandos básicos (practica escribiendo cada uno)
+
+**Ver dónde estás:**
 ```powershell
-# Ver el directorio actual
 pwd
+```
+Esto muestra la carpeta actual (ejemplo: `C:\Users\TuNombre`)
 
-# Listar archivos y carpetas
+**Ver qué archivos hay:**
+```powershell
 ls
+```
+Muestra todas las carpetas y archivos en donde estás
 
-# Cambiar de directorio
-cd nombre-carpeta
+**Entrar a una carpeta:**
+```powershell
+cd Desktop
+```
+Esto te lleva al Escritorio (Desktop)
 
-# Volver al directorio anterior
+**Volver atrás (subir una carpeta):**
+```powershell
 cd ..
+```
+Los dos puntos (..) significan "carpeta anterior"
 
-# Crear una carpeta
-mkdir nombre-carpeta
+**Crear una carpeta nueva:**
+```powershell
+mkdir MiCarpeta
+```
+Crea una carpeta llamada "MiCarpeta"
 
-# Limpiar la terminal
+**Limpiar la pantalla:**
+```powershell
 cls
 ```
+Borra todo el texto de la ventana (no borra archivos, solo limpia la pantalla)
 
 ---
 
-## 4. Crear Carpeta de Proyectos
+## 4. Crear tu Carpeta de Proyectos
 
-Crear una carpeta donde guardarás tus proyectos:
+Vamos a crear una carpeta donde guardaremos todos tus proyectos.
+
+### Paso a paso:
+
+1. Abre PowerShell (si lo cerraste)
+
+2. Ve al Escritorio:
 ```powershell
-cd C:\Users\TU_USUARIO\Desktop
+cd Desktop
+```
+
+3. Crea una carpeta llamada "Proyectos":
+```powershell
 mkdir Proyectos
+```
+
+4. Entra a esa carpeta:
+```powershell
 cd Proyectos
 ```
 
----
+5. Verifica dónde estás:
+```powershell
+pwd
+```
+Deberías ver algo como: `C:\Users\TuNombre\Desktop\Proyectos`
 
-## ✅ Checklist del Día 1
-- [ ] Git instalado y configurado
-- [ ] Visual Studio Code instalado
-- [ ] Extensiones de VS Code instaladas
-- [ ] Terminal PowerShell funcionando correctamente
-- [ ] Comandos básicos de terminal practicados
-- [ ] Carpeta de proyectos creada
+✅ ¡Perfecto! Aquí guardaremos los proyectos en los próximos días.
 
 ---
 
-## 📝 Notas
-- Mantén tu terminal abierta para el próximo día
-- Familiarízate con VS Code explorando su interfaz
-- Practica los comandos de navegación en la terminal
+## ✅ Verificación del Día 1
+
+Marca lo que ya completaste:
+
+- [ ] Git instalado (puedo escribir `git --version` y funciona)
+- [ ] Git configurado con mi nombre y email
+- [ ] Visual Studio Code instalado (puedo abrirlo)
+- [ ] Sé abrir PowerShell
+- [ ] Practiqué los comandos básicos (cd, ls, pwd, mkdir)
+- [ ] Creé la carpeta "Proyectos" en mi Escritorio
+
+**Si marcaste todo, ¡felicidades! 🎉 Estás listo para el Día 2**
 
 ---
 
-## 🎯 Próximo Día
-**Día 2**: Instalación de Node.js y gestión de paquetes con npm
+## 💡 Consejos para No Olvidar
+
+1. **PowerShell**: Siempre puedes cerrarla y abrirla de nuevo si algo sale mal
+2. **Comandos**: Si escribes mal un comando, solo aparecerá un error. No pasa nada grave
+3. **VS Code**: Aún no lo usaremos para programar, solo verifica que abra
+4. **Practica**: Abre y cierra PowerShell varias veces para acostumbrarte
+
+---
+
+## 🚀 Próximo Día
+
+**Día 2**: Instalaremos Node.js (para ejecutar JavaScript en tu computadora)
+
+Nos vemos mañana. ¡Excelente trabajo hoy! 🎉

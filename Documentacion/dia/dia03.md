@@ -1,178 +1,237 @@
-# Día 3: Docker Desktop y Conceptos de Contenedores
+# Día 3: Instalar Docker (Creador de "Mini Computadoras")
 
-## Objetivos del Día
-- Entender qué es Docker y para qué sirve
-- Instalar Docker Desktop en Windows
-- Conocer conceptos básicos de contenedores
+## ¿Qué vamos a hacer hoy?
 
----
+Hoy instalaremos **Docker Desktop**. Este es el día más largo, así que tómate tu tiempo.
 
-## 1. ¿Qué es Docker?
+**¿Qué es Docker?** (Explicación MUY simple)
 
-Docker es una plataforma que permite:
-- **Empaquetar aplicaciones** con todas sus dependencias
-- **Ejecutar aplicaciones** en contenedores aislados
-- **Garantizar** que la aplicación funcione igual en cualquier máquina
+Imagina que quieres tener varios programas corriendo al mismo tiempo sin que se peleen entre sí. Docker crea "cajas" especiales (contenedores) donde cada programa vive separado.
 
-### Conceptos Clave
+**Analogía**:
+- Tu computadora = edificio
+- Docker = creador de apartamentos
+- Contenedor = un apartamento individual
+- Cada apartamento tiene todo lo que necesita (baño, cocina, etc.)
 
-#### 🐳 Contenedor
-- Una instancia en ejecución de una imagen
-- Ambiente aislado que contiene la aplicación y sus dependencias
-- Similar a una "máquina virtual ligera"
-
-#### 📦 Imagen
-- Plantilla de solo lectura para crear contenedores
-- Contiene el código, runtime, librerías y configuración
-
-#### 🐋 Dockerfile
-- Archivo de instrucciones para construir una imagen
-- Define cómo se configurará el contenedor
-
-#### 🎼 Docker Compose
-- Herramienta para definir y ejecutar aplicaciones multi-contenedor
-- Usa un archivo `compose.yml` para configuración
+**No te preocupes si parece complicado**. Solo síguelo instalando y lo entenderás mejor cuando lo uses.
 
 ---
 
-## 2. Requisitos del Sistema
+## 1. Conceptos Básicos (Lectura rápida)
 
-### Windows
-- Windows 10/11 (64-bit)
-- **WSL 2 (Windows Subsystem for Linux)** - requerido
-- Virtualización habilitada en BIOS
-- Mínimo 4GB de RAM (8GB recomendado)
+### 🐳 Contenedor
+- Es como una "mini computadora virtual"
+- Tiene su propio sistema operativo pequeño
+- Está aislado de tu computadora real
+
+### 📦 Imagen
+- Es como la "receta" para crear un contenedor
+- Ejemplo: "imagen de MySQL" = instrucciones para crear una base de datos
+
+### 🐋 Dockerfile
+- Un archivo con instrucciones para crear una imagen
+- Es como una receta de cocina, pero para programas
+
+### 🎼 Docker Compose
+- Herramienta para manejar varios contenedores a la vez
+- Como un director de orquesta que coordina músicos
+
+**No memorices esto**. Solo léelo y continúa.
 
 ---
 
-## 3. Instalación de WSL 2
+## 2. ¿Qué necesitas antes de instalar Docker?
 
-Antes de instalar Docker, necesitamos WSL 2.
+### Requisitos (verifica que tu computadora los tenga):
+- Windows 10 o Windows 11
+- 8GB de RAM (mínimo 4GB, pero se recomendar 8GB)
+- Conexión a internet buena (descargaremos cosas grandes)
+- Espacio en disco: 10GB libres
 
-### Abrir PowerShell como Administrador
-Clic derecho en el ícono de Windows → "Terminal (Administrador)"
+**Si tienes Windows 10/11 reciente, probablemente todo funcionará bien** ✅
 
-### Instalar WSL 2
+---
+
+## 3. PASO 1: Instalar WSL 2 (Sistema Linux para Windows)
+
+### ¿Qué es WSL?
+**WSL** = Windows Subsystem for Linux
+
+Es como tener un pequeño Linux viviendo dentro de Windows. Docker lo necesita para funcionar.
+
+**No te asustes**, es muy fácil de instalar.
+
+### Instalación de WSL 2:
+
+1. **Abre PowerShell como Administrador**:
+   - Click derecho en el Menú Inicio de Windows
+   - Click en "Terminal (Admin)" o "Windows PowerShell (Administrador)"
+   - Si aparece una ventana pidiendo permiso, haz clic en "Sí"
+
+2. **Copia y pega este comando**:
 ```powershell
 wsl --install
 ```
 
-Esto instalará:
-- WSL 2
-- Ubuntu (distribución por defecto)
+3. **Presiona Enter**
 
-### Reiniciar el equipo
-Después de la instalación, reinicia tu computadora.
+4. **Espera** (puede tardar 5-10 minutos)
+   - Verás que se descargan e instalan cosas
+   - Mensajes como "Installing..." son normales
 
-### Verificar WSL
-Después del reinicio, ejecutar:
+5. **Cuando termine**, te pedirá reiniciar la computadora
+   - Guarda todo lo que estés haciendo
+   - Reinicia la PC
+
+6. **Después de reiniciar**:
+   - Puede que se abra una ventana de Ubuntu (es normal)
+   - Te pedirá crear un usuario, ponle un nombre simple
+   - Te pedirá una contraseña, ponle algo que recuerdes
+
+### Verificar que WSL funciona:
+
+Abre PowerShell normal (no como administrador) y escribe:
 ```powershell
 wsl --version
 ```
 
----
+Deberías ver información sobre WSL. Si aparece, ¡perfecto! ✅
 
-## 4. Instalación de Docker Desktop
-
-### Descargar Docker Desktop
-1. Ir a: https://www.docker.com/products/docker-desktop/
-2. Descargar **Docker Desktop for Windows**
-3. Tamaño aproximado: ~500MB
-
-### Instalación
-1. Ejecutar el instalador `Docker Desktop Installer.exe`
-2. Configuración durante la instalación:
-   - ✅ Use WSL 2 instead of Hyper-V (recomendado)
-   - ✅ Add shortcut to desktop
-
-3. Esperar a que termine la instalación
-4. Reiniciar si es necesario
-
-### Primer Inicio de Docker Desktop
-1. Abrir Docker Desktop desde el menú inicio
-2. Aceptar los términos de servicio
-3. (Opcional) Crear cuenta de Docker Hub o saltar
-4. Esperar a que Docker Engine inicie - verás un ícono de ballena en la barra de tareas
+**¿Da error?** Asegúrate de haber reiniciado la PC.
 
 ---
 
-## 5. Verificar la Instalación
+## 4. PASO 2: Instalar Docker Desktop
 
-Abrir una terminal PowerShell y ejecutar:
+### ¿Qué es Docker Desktop?
+Es la aplicación gráfica de Docker para Windows. Te permite controlar Docker con clics además de comandos.
 
+### Descarga e Instalación:
+
+1. **Ir a la página de Docker**:
+   - Abre tu navegador
+   - Ve a: **https://www.docker.com/products/docker-desktop/**
+
+2. **Descargar**:
+   - Click en "Download for Windows"
+   - El archivo es grande (~500MB), tardará un poco
+
+3. **Instalar**:
+   - Abre el archivo descargado (`Docker Desktop Installer.exe`)
+   - **MUY IMPORTANTE**: Asegúrate de marcar:
+     - ✅ "Use WSL 2 instead of Hyper-V" (Usar WSL 2)
+   - Click en "OK"
+   - Espera (puede tardar 5-10 minutos)
+
+4. **Finalizar**:
+   - Click en "Close and restart" (Cerrar y reiniciar)
+   - Tu PC se reiniciará otra vez
+
+5. **Después del reinicio**:
+   - Docker Desktop se abrirá automáticamente
+   - Te mostrará un tutorial, puedes saltearlo
+   - Verás un ícono de **ballena** en la barra de tareas (abajo a la derecha)
+   - Si la ballena no se mueve, ¡Docker está listo! ✅
+
+---
+
+## 5. Verificar que Docker funciona
+
+**IMPORTANTE**: Asegúrate de que Docker Desktop esté abierto (ver el ícono de ballena en la barra de tareas).
+
+### Abrir PowerShell y probar:
+
+1. Abre PowerShell (normal, no como administrador)
+
+2. Escribe:
 ```bash
 docker --version
+```
+
+Deberías ver algo como: `Docker version 24.0.6`
+
+3. Escribe:
+```bash
 docker compose version
 ```
 
-Deberías ver algo como:
-```
-Docker version 24.x.x
-Docker Compose version v2.x.x
-```
+Deberías ver algo como: `Docker Compose version v2.23.0`
 
-### Probar Docker con un contenedor simple
+**Si ambos funcionan, ¡felicidades! Docker está instalado** 🎉
+
+### Prueba final con "Hello World":
+
+Escribe:
 ```bash
 docker run hello-world
 ```
 
-Este comando:
-1. Descarga la imagen `hello-world`
-2. Crea un contenedor
-3. Ejecuta el contenedor
-4. Muestra un mensaje de confirmación
+**¿Qué debería pasar?**
+1. Docker descarga una imagen llamada "hello-world"
+2. Crea un contenedor con esa imagen
+3. El contenedor muestra un mensaje
+4. El contenedor se detiene
+
+Verás un mensaje que dice "Hello from Docker!" ✅
+
+**¿Da error?** Verifica que Docker Desktop esté abierto y corriendo.
 
 ---
 
-## 6. Comandos Básicos de Docker
+## 6. Comandos Básicos de Docker (Solo lectura)
 
-### Gestión de Contenedores
+**No ejecutes estos comandos ahora**, solo léelos para familiarizarte. Los usarás en los próximos días.
+
+### Ver contenedores:
 ```bash
-# Ver contenedores en ejecución
+# Ver contenedores corriendo ahora
 docker ps
 
-# Ver todos los contenedores (incluidos los detenidos)
+# Ver TODOS los contenedores (incluso los detenidos)
 docker ps -a
+```
 
+### Controlar contenedores:
+```bash
 # Detener un contenedor
 docker stop nombre-contenedor
 
 # Eliminar un contenedor
 docker rm nombre-contenedor
 
-# Ver logs de un contenedor
+# Ver qué está pasando dentro de un contenedor
 docker logs nombre-contenedor
 ```
 
-### Gestión de Imágenes
+### Trabajar con imágenes:
 ```bash
-# Ver imágenes descargadas
+# Ver las imágenes que tienes descargadas
 docker images
-
-# Eliminar una imagen
-docker rmi nombre-imagen
 
 # Descargar una imagen
 docker pull nombre-imagen
+
+# Eliminar una imagen
+docker rmi nombre-imagen
 ```
 
-### Docker Compose
+### Docker Compose (para manejar varios contenedores):
 ```bash
-# Iniciar servicios definidos en compose.yml
-docker compose up
-
-# Iniciar en segundo plano
+# Iniciar todo (lo usarás MUY seguido)
 docker compose up -d
 
-# Detener servicios
+# Detener todo
 docker compose down
 
-# Ver logs
+# Ver logs de todo
 docker compose logs
 
-# Reconstruir y ejecutar
+# Reconstruir y reiniciar todo
 docker compose up -d --build
 ```
+
+**Consejo**: Guarda esta página como favorito, volverás aquí seguido.
 
 ---
 
@@ -197,39 +256,52 @@ docker rm mysql-prueba
 
 ---
 
-## 8. Configuración Recomendada de Docker Desktop
+## 7. Configuración de Docker Desktop (Opcional pero RecomendadA)
 
-1. Abrir Docker Desktop
-2. Ir a Settings (⚙️)
-3. **Resources**:
-   - CPUs: Mínimo 2, recomendado 4
-   - Memory: Mínimo 4GB, recomendado 8GB
-   - Swap: 1GB
-   - Disk image size: 60GB
+1. Abre Docker Desktop (click en el ícono de ballena)
+2. Click en el ícono de engranaje ⚙️ (Settings)
+3. Ve a "Resources" (Recursos)
+4. Ajusta estos valores:
+   - **CPUs**: 2 (mínimo) o 4 (recomendado)
+   - **Memory**: 4GB (mínimo) o 6-8GB (recomendado)
+5. Click en "Apply & Restart"
 
-4. **General**:
-   - ✅ Start Docker Desktop when you log in
-   - ✅ Use WSL 2 based engine
+**¿Por qué esto?** Le das más poder a Docker para que funcione mejor.
 
 ---
 
-## ✅ Checklist del Día 3
-- [ ] WSL 2 instalado y verificado
+## ✅ Verificación del Día 3
+
+Marca lo que completaste:
+
+- [ ] WSL 2 instalado (comando `wsl --version` funciona)
 - [ ] Docker Desktop instalado
-- [ ] Docker Engine iniciado correctamente
-- [ ] Comando `docker --version` funciona
-- [ ] Contenedor `hello-world` ejecutado exitosamente
-- [ ] Comandos básicos de Docker practicados
-- [ ] Contenedor MySQL de prueba ejecutado
+- [ ] Ícono de ballena visible en la barra de tareas
+- [ ] Comando `docker --version` funciona  
+- [ ] Comando `docker compose version` funciona
+- [ ] Ejecuté `docker run hello-world` exitosamente
+- [ ] Leí los comandos básicos (no necesito memorizarlos)
+- [ ] (Opcional) Configuré recursos de Docker Desktop
+
+**Si marcaste la mayoría, ¡excelente trabajo! 🚀**
+
+Este fue el día más complicado. Los siguientes serán más fáciles.
 
 ---
 
-## 📝 Notas Importantes
-- Docker Desktop debe estar corriendo para usar Docker
-- El ícono de ballena en la barra de tareas indica que Docker está activo
-- Si ves errores de "pipe", significa que Docker Desktop no está iniciado
+## � Consejos Importantes
+
+1. **Ícono de ballena**: Si la ballena está gris o con X, Docker no está corriendo. Ábrelo de nuevo.
+2. **Errores de "pipe"**: Significa que Docker Desktop no está iniciado. Solo ábrelo.
+3. **Lento al iniciar**: Docker tarda 1-2 minutos en arrancar cuando abres tu PC. Es normal.
+4. **Consume recursos**: Docker usará RAM y CPU. Ciérralo si no lo estás usando.
 
 ---
 
-## 🎯 Próximo Día
-**Día 4**: Clonar el proyecto y entender su estructura
+## 🚀 Próximo Día
+
+**Día 4**: Descargaremos el proyecto a tu computadora y veremos qué tiene adentro
+
+¡Descansa! Hoy instalaste muchas cosas. Los próximos días serán más sencillos.
+
+**Recuerda**: Antes de empezar el Día 5 o 6, ¡asegúrate de que Docker Desktop esté abierto!

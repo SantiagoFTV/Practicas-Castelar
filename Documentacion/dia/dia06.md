@@ -1,95 +1,87 @@
-# Día 6: Primera Ejecución del Proyecto
+# Día 6: ¡Encender el Proyecto por Primera Vez!
 
-## Objetivos del Día
-- Ejecutar el proyecto por primera vez
-- Verificar que todos los servicios funcionen
-- Acceder a la aplicación web
-- Resolver problemas comunes
+## ¿Qué vamos a hacer hoy?
 
----
+Hoy es el día más emocionante: **¡ejecutaremos el proyecto completo!**
 
-## 1. Pre-requisitos
+Con un solo comando, se iniciarán:
+- 📦 Base de datos (MySQL)
+- 🔧 Servidor (Backend)
+- 🌐 Página web (Frontend)
 
-### Verificar que todo esté instalado:
-```bash
-# Git
-git --version
-
-# Node.js
-node --version
-
-# Docker
-docker --version
-
-# Docker Compose
-docker compose version
-```
-
-### Verificar que Docker Desktop esté corriendo:
-- Busca el ícono de ballena en la barra de tareas
-- Debe estar activo (no gris)
+**Es como presionar un botón mágico que inicia todo** ✨
 
 ---
 
-## 2. Preparar el Proyecto
+## 1. Antes de Empezar
 
-### Navegar a la carpeta del proyecto:
+### Verificaciones importantes:
+
+**1. ¿Docker Desktop está abierto?**
+- Busca el ícono de ballena en la barra de tareas (abajo a la derecha)
+- Si no está, ábrelo desde el Menú Inicio
+- Espera 1-2 minutos a que termine de cargar
+
+**2. ¿Estás en la carpeta correcta?**
+
+Abre PowerShell y verifica:
 ```bash
-cd C:\Users\SANTIAGO\Desktop\Practicas-Castelar
+pwd
 ```
 
-### Abrir en VS Code:
+Deberías estar en algo como: `C:\Users\SANTIAGO\Desktop\Practicas-Castelar`
+
+**Si no estás ahí**, navega a la carpeta:
 ```bash
-code .
-```
-
-### Verificar la estructura:
-```bash
-ls
-```
-
-Debes ver:
-- `compose.yml`
-- `src/` (carpeta)
-- `package.json`
-- etc.
-
----
-
-## 3. Instalar Dependencias Locales (Opcional)
-
-Aunque Docker manejará las dependencias, es útil tenerlas localmente para el editor:
-
-```bash
-# Dependencias raíz
-npm install
-
-# Dependencias del backend
-cd src/backend
-npm install
-cd ../..
+cd Desktop
+cd Practicas-Castelar
 ```
 
 ---
 
-## 4. Revisar Variables de Entorno
+## 2. ¡El Comando Mágico!
 
-### Verificar que no exista .env o crear uno si es necesario:
+### Escribir el comando mágico:
+
+En PowerShell, escribe:
+
 ```bash
-# Ver si existe
-ls .env
-
-# Si no existe y hay .env.example
-cp .env.example .env
+docker compose up -d --build
 ```
 
-**Nota**: En este proyecto, las variables están definidas en `compose.yml`, así que no es estrictamente necesario.
+Presiona Enter y **espera**.
 
----
+### ¿Qué significa este comando?
 
-## 5. Primera Ejecución con Docker Compose
+- `docker compose` = Usa Docker Compose (coordinador de contenedores)
+- `up` = "Enciende" los servicios
+- `-d` = Modo segundo plano (no bloquear la terminal)
+- `--build` = Construye todo antes de iniciar
 
-### Iniciar todos los servicios:
+### ¿Qué verás?
+
+Verás MUCHÍSIMO texto:
+- [+] Building... (construyendo)
+- [+] Pulling... (descargando)
+- [+] Creating... (creando)
+- [+] Starting... (iniciando)
+
+**NO TE ASUSTES. Esto es normal** ✅
+
+**¿Cuánto tarda?**
+- 🕐 Primera vez: 5-10 minutos (descarga cosas grandes)
+- ⏱️ Próximas veces: 1-2 minutos
+
+### Señales de éxito:
+
+Al final verás:
+```
+✅ Container el-puente-db          Started
+✅ Container el-puente-backend     Started  
+✅ Container el-puente-frontend    Started
+```
+
+**Si ves los 3 ✅, FELICIDADES! Todo está corriendo** 🎉
 ```bash
 docker compose up -d --build
 ```
@@ -115,14 +107,16 @@ Verás algo como:
 
 ---
 
-## 6. Verificar que Todo Esté Corriendo
+## 3. Verificar que Todo Esté Funcionando
 
-### Ver el estado de los contenedores:
+### Ver si los contenedores están corriendo:
+
+En PowerShell, escribe:
 ```bash
 docker compose ps
 ```
 
-Deberías ver algo como:
+**¿Qué deberías ver?**
 ```
 NAME                    STATUS          PORTS
 el-puente-db           Up 2 minutes    0.0.0.0:3307->3306/tcp
@@ -130,81 +124,60 @@ el-puente-backend      Up 2 minutes    0.0.0.0:3001->3000/tcp
 el-puente-frontend     Up 2 minutes    0.0.0.0:8080->80/tcp
 ```
 
-**Todos deben estar en estado "Up"** ✅
+✅ **Todos deben decir "Up" (arriba)**
 
----
+Si alguno dice "Exited" (salido), algo falló.
 
-## 7. Verificar los Logs
+### ¿Cómo ver si hay errores?
 
-### Ver logs de todos los servicios:
+Si algo no funciona, escribe:
 ```bash
 docker compose logs
 ```
 
-### Ver logs de un servicio específico:
-```bash
-# Base de datos
-docker compose logs db
+Esto muestra lo que cada contenedor está haciendo. Busca líneas rojas (errores).
 
-# Backend
+**Para ver solo el backend:**
+```bash
 docker compose logs backend
-
-# Frontend
-docker compose logs frontend
 ```
 
-### Seguir logs en tiempo real:
+**Para ver solo la base de datos:**
 ```bash
-docker compose logs -f backend
-```
-
-### Qué buscar en los logs:
-
-**Backend debe mostrar:**
-```
-Server running on port 3000
-Database connected successfully
-```
-
-**Database debe mostrar:**
-```
-MySQL init process done. Ready for start up.
+docker compose logs db
 ```
 
 ---
 
-## 8. Probar los Servicios
+## 4. ¡Abrir la Página Web!
 
-### Verificar cada servicio individualmente:
+### Esta es la parte más emocionante 🎉
 
-#### 1. Base de datos (MySQL)
-```bash
-# Conectar a MySQL
-docker compose exec db mysql -u puente_user -ppuente_password el_puente
+1. Abre tu navegador (Chrome, Firefox, Edge)
+2. En la barra de direcciones, escribe:
+```
+http://localhost:8080
+```
+3. Presiona Enter
 
-# Dentro de MySQL, ver las tablas
-SHOW TABLES;
+**¿Qué deberías ver?**
+- La página principal del proyecto
+- Botones de "Login" y "Register"
+- Diseño de la aplicación
 
-# Ver usuarios (si la tabla existe)
-SELECT * FROM users;
+✅ **Si ves la página, ¡FUNCIONA! Felicidades** 🎊
 
-# Salir
-exit;
+### Otras direcciones que puedes probar:
+
+**Página de registro:**
+```
+http://localhost:8080/html/register.html
 ```
 
-#### 2. Backend (API)
-Abrir navegador o usar PowerShell:
-
-```powershell
-# Verificar que el servidor responda
-curl http://localhost:3001
-
-# O mejor, probar endpoint de salud (si existe)
-curl http://localhost:3001/api/health
+**Página de login:**
 ```
-
-#### 3. Frontend (Aplicación web)
-Abrir navegador y visitar:
+http://localhost:8080/html/login.html
+```
 ```
 http://localhost:8080
 ```
@@ -224,107 +197,113 @@ Deberías ver la página principal de la aplicación.
 
 2. **Login**
    ```
-   http://localhost:8080/html/login.html
-   ```
+---
 
-3. **Registro**
-   ```
-   http://localhost:8080/html/register.html
-   ```
+## 5. ¡Probar que Todo Funciona!
 
-4. **Recuperar contraseña**
-   ```
-   http://localhost:8080/html/forgot.html
-   ```
+### Registrar un usuario nuevo:
 
-### Probar el registro de usuario:
-1. Ir a http://localhost:8080/html/register.html
-2. Llenar el formulario
-3. Hacer clic en "Registrarse"
-4. Verificar en la consola del navegador (F12) si hay errores
+1. Ve a: `http://localhost:8080/html/register.html`
+2. Llena el formulario:
+   - Usuario: `prueba`
+   - Email: `prueba@test.com`
+   - Contraseña: `password123`
+   - Nombre y apellido: lo que quieras
+3. Click en "Registrarse"
+4. Si te redirige a otra página o dice "éxito", ¡funcionó! ✅
+
+### Iniciar sesión:
+
+1. Ve a: `http://localhost:8080/html/login.html`
+2. Ingresa:
+   - Usuario: `prueba`
+   - Contraseña: `password123`
+3. Click en "Iniciar sesión"
+4. Si entras al sistema, ¡TODO FUNCIONA PERFECTO! 🎉
 
 ---
 
-## 10. Verificar la Base de Datos
+## 6. Comandos Útiles (Guárdalos)
 
-### Ver si el usuario se registró:
-```bash
-# Entrar a MySQL
-docker compose exec db mysql -u puente_user -ppuente_password el_puente
-
-# Ver usuarios registrados
-SELECT * FROM users;
-```
-
----
-
-## 11. Comandos Útiles Durante el Desarrollo
-
-### Reiniciar un servicio:
-```bash
-docker compose restart backend
-```
-
-### Ver logs en tiempo real:
-```bash
-docker compose logs -f
-```
-
-### Detener todos los servicios:
+### Cuando quieras detener todo:
 ```bash
 docker compose down
 ```
 
-### Detener y eliminar volúmenes (datos):
+### Cuando quieras reiniciar todo:
 ```bash
-docker compose down -v
+docker compose up -d
 ```
 
-### Reconstruir y reiniciar:
+### Cuando hagas cambios al código:
 ```bash
 docker compose up -d --build
 ```
 
-### Ejecutar comando en un contenedor:
+### Ver qué está pasando (logs):
 ```bash
-# Entrar al contenedor del backend
-docker compose exec backend sh
-
-# Ver archivos
-ls -la
-
-# Salir
-exit
+docker compose logs -f
 ```
+(Presiona Ctrl+C para salir)
 
 ---
 
-## 12. Troubleshooting
+## 7. ¿Algo No Funciona? (Problemas Comunes)
 
-### Problema: "Unable to get image"
-**Solución**: Docker Desktop no está corriendo
-```bash
-# Verificar
-docker ps
-```
-Si da error, inicia Docker Desktop y espera a que cargue.
+### Problema 1: "unable to get image" o "pipe"
+**Causa**: Docker Desktop no está abierto
 
----
-
-### Problema: "Port already in use"
-**Solución**: Cambiar el puerto en compose.yml
-```yaml
-ports:
-  - "3002:3000"  # Cambiar 3001 por 3002
-```
+**Solución:**
+1. Abre Docker Desktop
+2. Espera 1-2 minutos
+3. Intenta el comando de nuevo
 
 ---
 
-### Problema: "Backend no se conecta a la BD"
-**Solución**: Revisar logs del backend
+### Problema 2: "port already in use" (puerto en uso)
+**Causa**: Otro programa está usando el puerto 8080, 3001 o 3307
+
+**Solución rápida:**
+1. Reinicia tu computadora
+2. Asegúrate de que Docker Desktop esté abierto
+3. Intenta de nuevo
+
+---
+
+### Problema 3: La página no carga (localhost:8080)
+**Solución:**
+1. Espera 1-2 minutos (a veces tarda en iniciar)
+2. Verifica que los contenedores estén "Up":
+   ```bash
+   docker compose ps
+   ```
+3. Ve los logs para ver errores:
+   ```bash
+   docker compose logs frontend
+   ```
+
+---
+
+### Problema 4: "Backend no se conecta a la BD"
+**Solución:**
+1. Espera un poco más (MySQL tarda en arrancar)
+2. Reinicia solo el backend:
+   ```bash
+   docker compose restart backend
+   ```
+
+---
+
+### ¿NADA funciona?
+
+**Último recurso** (esto borrará todo y empezará de cero):
+
 ```bash
-docker compose logs backend
+docker compose down -v
+docker compose up -d --build
 ```
+
+Espera 5 minutos y prueba de nuevo.
 
 Verificar que la base de datos esté "healthy":
 ```bash
@@ -350,80 +329,55 @@ docker compose up -d --build
 
 ---
 
-## 13. Detener el Proyecto
+## ✅ Verificación del Día 6
 
-### Cuando termines de trabajar:
+Marca lo que completaste:
+
+- [ ] Ejecuté `docker compose up -d --build` exitosamente
+- [ ] Los 3 contenedores están "Up" (db, backend, frontend)
+- [ ] Puedo abrir http://localhost:8080 en mi navegador
+- [ ] Pude registrar un usuario nuevo
+- [ ] Pude iniciar sesión con ese usuario
+- [ ] Sé cómo detener el proyecto (`docker compose down`)
+- [ ] Sé cómo ver los logs (`docker compose logs`)
+
+**Si marcaste todo, ¡FELICIDADES! 🎉 Lograste hacer funcionar el proyecto completo**
+
+Este fue el día más importante. ¡Lo demás es más fácil!
+
+---
+
+## 💡 Consejos Importantes
+
+**Para trabajar con el proyecto:**
+1. Siempre abre Docker Desktop PRIMERO
+2. Espera a que cargue (1-2 minutos)
+3. Luego ejecuta `docker compose up -d`
+4. Cuando termines: `docker compose down`
+
+**Comandos que usarás TODO EL TIEMPO:**
 ```bash
-# Detener servicios (mantiene datos)
-docker compose down
-
-# Detener y eliminar todo (incluyendo datos)
-docker compose down -v
+docker compose up -d          # Encender
+docker compose down            # Apagar
+docker compose logs            # Ver qué pasa
+docker compose ps              # Ver estado
 ```
 
----
-
-## 14. Checklist de Verificación
-
-### ✅ Señales de que todo funciona:
-
-- [ ] `docker compose ps` muestra todos los servicios "Up"
-- [ ] Logs del backend muestran "Server running"
-- [ ] Logs de DB muestran "Ready for start up"
-- [ ] http://localhost:8080 carga la página principal
-- [ ] Puedes registrar un usuario
-- [ ] El usuario aparece en la base de datos
-- [ ] No hay errores en la consola del navegador
+**Recuerda:**
+- La primera vez tarda más (descarga cosas)
+- Las próximas veces son más rápidas
+- Si algo falla, revisa los logs
+- Cuando tengas dudas, reinicia todo
 
 ---
 
-## 15. Práctica: Ciclo Completo
+## 🚀 Próximo Día
 
-### Ejercicio final del día:
+**Día 7**: Veremos cómo funciona el servidor (backend) por dentro
 
-1. **Detener todo**
-   ```bash
-   docker compose down -v
-   ```
+Ahora que el proyecto funciona, en los próximos días entenderemos cómo está hecho.
 
-2. **Iniciar desde cero**
-   ```bash
-   docker compose up -d --build
-   ```
-
-3. **Verificar servicios**
-   ```bash
-   docker compose ps
-   docker compose logs -f
-   ```
-
-4. **Probar la aplicación**
-   - Abrir http://localhost:8080
-   - Registrar un usuario
-   - Verificar en la base de datos
-
-5. **Detener nuevamente**
-   ```bash
-   docker compose down
-   ```
-
----
-
-## ✅ Checklist del Día 6
-- [ ] Proyecto ejecutado exitosamente
-- [ ] Todos los servicios corriendo (db, backend, frontend)
-- [ ] Aplicación accesible en http://localhost:8080
-- [ ] Usuario registrado exitosamente
-- [ ] Base de datos verificada
-- [ ] Logs revisados sin errores críticos
-- [ ] Comandos de gestión practicados
-
----
-
-## 📝 Notas Importantes
-- Guarda la salida de los logs si hay errores
-- La primera ejecución siempre es más lenta (descarga de imágenes)
-- Los datos se mantienen entre reinicios (gracias a los volúmenes)
+¡Descansa y celébralo! Hiciste algo genial hoy 🎊
 
 ---
 
